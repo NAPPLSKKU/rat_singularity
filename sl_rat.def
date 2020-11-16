@@ -1,0 +1,81 @@
+BootStrap: docker
+From: sl:7
+
+%help
+This container installs everything necessary for JSNS2-RAT. Because of current
+limitations, the def file is unable to compile rat at the end, so this has to
+happen manually.
+
+%files
+    ./RAT /opt/
+
+%environment
+    source /opt/root/bin/thisroot.sh
+    source /opt/geant4/bin/geant4.sh
+    source /opt/rat-pac-jsns2/env.sh
+    export LD_LIBRARY_PATH="/opt/geant4/lib/:$LD_LIBRARY_PATH"
+    export LD_LIBRARY_PATH="/usr/local/lib/:$LD_LIBRARY_PATH"
+    export G4LEDATA="/opt/geant4/share/Geant4-10.4.2/data/G4EMLOW7"
+    export G4LEVELGAMMADATA="/opt/geant4/share/Geant4-10.4.2/data/PhotonEvaporation5.2"
+    export G4NEUTRONHPDATA="/opt/geant4/share/Geant4-10.4.2/data/G4NDL4.5"
+    export G4NEUTRONXSDATA="/opt/geant4/share/Geant4-10.4.2/data/G4NEUTRONXS1.4"
+    export G4PIIDATA="/opt/geant4/share/Geant4-10.4.2/data/G4PII1.3"
+    export G4RADIOACTIVEDATA="/opt/geant4/share/Geant4-10.4.2/data/RadioactiveDecay5.2"
+    export G4REALSURFACEDATA="/opt/geant4/share/Geant4-10.4.2/data/RealSurface2.1.1"
+    export G4SAIDXSDATA="/opt/geant4/share/Geant4-10.4.2/data/G4SAIDDATA1.1"
+    export G4ENSDFSTATEDATA="/opt/geant4/share/Geant4-10.4.2/data/G4ENSDFSTATE2.2"
+    export G4ABLADATA="/opt/geant4/share/Geant4-10.4.2/data/G4ABLA3.1"
+
+%post
+
+# Installing packages via yum
+yum -y update && yum clean all
+yum install -y wget
+#wget -O /etc/yum.repos.d/slc6-devtoolset.repo http://linuxsoft.cern.ch/cern/devtoolset/slc6-devtoolset.repo
+#yum install -y devtoolset-1.1
+yum install -y tar xz git make cmake3 gcc gcc-c++
+yum install -y libX11-devel libXpm-devel libXft-devel libXext-devel openssl-devel fftw-devel
+#yum install -y scons
+
+# Installing Python 2.7 with development header
+cd /home
+wget http://python.org/ftp/python/2.7.6/Python-2.7.6.tar.xz
+tar xf Python-2.7.6.tar.xz
+rm Python-2.7.6.tar.xz
+cd Python-2.7.6
+./configure --enable-unicode=ucs4 --enable-shared #LDFLAGS="-Wl,-rpath=/home/python/lib"
+make && make install
+
+rm -r /home/Python-2.7.6
+
+# Installing ROOT 5.34
+cd /home
+mkdir /home/ROOT/ && cd /home/ROOT/
+git clone --branch v6-16-00-patches https://github.com/root-project/root.git /home/ROOT/root_src
+mkdir /home/ROOT/root_build && cd /home/ROOT/root_build
+#/home/ROOT/root_src/configure --enable-python --enable-minuit2
+cmake3 -DCMAKE_INSTALL_PREFIX=/opt/root /home/ROOT/root_src -Dminuit2=ON -Dfftw3=ON
+cmake3 --build . --target install
+cd /home && rm -rf ROOT
+
+# Installing Geant4
+cd /home
+mkdir /home/G4/ && cd /home/G4/
+wget http://cern.ch/geant4-data/releases/geant4.10.01.p03.tar.gz && tar -zxvf geant4.10.01.p03.tar.gz
+mkdir -p geant4.10.01.p03/geant4.10.01.p03-build && cd geant4.10.01.p03/geant4.10.01.p03-build
+cmake .. -DCMAKE_INSTALL_PREFIX=/opt/geant4/ -DGEANT4_USE_SYSTEM_EXPAT=OFF -DGEANT4_INSTALL_DATA=ON -DGEANT4_BUILD_MULTITHREADED=ON -DGEANT4_USE_QT=OFF -DGEANT4_INSTALL_DATA_TIMEOUT=15600
+make -j2 && make install
+cd /home && rm -rf G4
+
+# Installing scons from github
+git clone --branch rel_3.1.2 https://github.com/SCons/scons.git /opt/scons
+cd /opt/scons
+python bootstrap.py
+cd /opt/scons/build/scons
+python setup.py install
+
+# Installing RAT
+cd /opt/RAT/rat-pac-jsns2-v2.0
+#git clone https://gitlab.com/JSNS2/RAT.git
+#cd rat-pac-jsns2
+./configure
