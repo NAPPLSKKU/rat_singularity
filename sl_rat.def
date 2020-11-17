@@ -30,12 +30,11 @@ happen manually.
 
 # Installing packages via yum
 yum -y update && yum clean all
+# Loading in extra package repository for cmake3
+yum install -y epel-release
 yum install -y wget
-#wget -O /etc/yum.repos.d/slc6-devtoolset.repo http://linuxsoft.cern.ch/cern/devtoolset/slc6-devtoolset.repo
-#yum install -y devtoolset-1.1
-yum install -y tar xz git make cmake3 gcc gcc-c++
+yum install -y tar xz git make cmake3 cmake gcc gcc-c++
 yum install -y libX11-devel libXpm-devel libXft-devel libXext-devel openssl-devel fftw-devel
-#yum install -y scons
 
 # Installing Python 2.7 with development header
 cd /home
@@ -48,7 +47,7 @@ make && make install
 
 rm -r /home/Python-2.7.6
 
-# Installing ROOT 5.34
+# Installing ROOT 6.16
 cd /home
 mkdir /home/ROOT/ && cd /home/ROOT/
 git clone --branch v6-16-00-patches https://github.com/root-project/root.git /home/ROOT/root_src
