@@ -7,12 +7,12 @@ limitations, the def file is unable to compile rat at the end, so this has to
 happen manually.
 
 %files
-    ./RAT /opt/
+    ./rat-pac-jsns2-v2.0 /opt/
 
 %environment
     source /opt/root/bin/thisroot.sh
     source /opt/geant4/bin/geant4.sh
-    source /opt/RAT/rat-pac-jsns2-v2.0/env.sh
+    source /opt/rat-pac-jsns2-v2.0/env.sh
     export LD_LIBRARY_PATH="/opt/geant4/lib/:$LD_LIBRARY_PATH"
     export LD_LIBRARY_PATH="/usr/local/lib/:$LD_LIBRARY_PATH"
 
@@ -65,5 +65,5 @@ cd /opt/scons/build/scons
 python setup.py install
 
 # Installing RAT
-cd /opt/RAT/rat-pac-jsns2-v2.0
+cd /opt/rat-pac-jsns2-v2.0
 ./configure
