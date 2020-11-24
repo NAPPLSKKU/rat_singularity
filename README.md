@@ -25,17 +25,21 @@ Since the JSNS2-RAT repository is private, it is necessary to manually copy it i
 
 `git clone \<jsns2-rat repository\>`
   
-before we build our singularity def-file in the same folder:
+We need to put the 'rat-pac-jsns2-v2.0' folder into our working from directory, from which we then call:
 
-`sudo singularity build --writable sl7_rat.img sl_rat.def`
+`sudo singularity build --sandbox sl7_rat sl_rat.def`
 
-We need to specify the "--writable" flag, since we need to compile jsns2-rat at the end using scons. So, after your container finished building, you need to type into the CLI
+It is safer to specify the "--sandbox" flag here, since I had problems with singularity running out of temporary space. After your container finished building, you need to type into the CLI (we specify the "--writable" flag because we want our changes to be safed)
 ```
-sudo singularity shell --writable sl7_rat.img
+sudo singularity shell --writable sl7_rat
 cd /opt/RAT/rat-pac-jsns2-v2.0
 scons
 ```
 and wait for scons to finish compiling. If everything worked an there were no error messages, you can take a well deserved sip of what ever beverage you prefer and move to the next step.
+
+As and additional step, we convert the image from sandbox (where you can interact with the folder) to a more space efficient image in the singularity format via
+
+`sudo singularity build sl7_rat.img sl7_rat`
 
 ## Running jsns2-rat using Singularity
 To run RAT using your singularity container is quite easy. If you are not already in the singularity container shell, run
