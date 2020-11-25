@@ -25,7 +25,7 @@ Since the JSNS2-RAT repository is private, it is necessary to manually copy it i
 
 `git clone \<jsns2-rat repository\>`
   
-We need to put the 'rat-pac-jsns2-v2.0' folder into our working from directory, from which we then call:
+We need to put the 'rat-pac-jsns2-v2.0' folder into our working directory, from which we then call:
 
 `sudo singularity build --sandbox sl7_rat sl_rat.def`
 
