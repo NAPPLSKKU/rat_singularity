@@ -29,7 +29,7 @@ We need to put the 'rat-pac-jsns2-v2.0' folder into our working directory, from 
 
 `sudo singularity build --sandbox sl7_rat sl_rat.def`
 
-It is safer to specify the "--sandbox" flag here, since I had problems with singularity running out of temporary space. After your container finished building, you need to type into the CLI (we specify the "--writable" flag because we want our changes to be safed)
+It is safer to specify the "--sandbox" flag here, since I had problems with singularity running out of temporary space during the build process. After your container finished building, you need to type into the CLI (we specify the "--writable" flag because we want our changes to be safed)
 ```
 sudo singularity shell --writable sl7_rat
 cd /opt/RAT/rat-pac-jsns2-v2.0
@@ -37,14 +37,14 @@ scons
 ```
 and wait for scons to finish compiling. If everything worked an there were no error messages, you can take a well deserved sip of what ever beverage you prefer and move to the next step.
 
-As and additional step, we convert the image from sandbox (where you can interact with the folder) to a more space efficient image in the singularity format via
+As an additional step, we convert the image from sandbox (where you can interact with the folder) to a more space efficient image in the singularity format via
 
-`sudo singularity build sl7_rat.img sl7_rat`
+`sudo singularity build sl7_rat.sif sl7_rat`
 
 ## Running jsns2-rat using Singularity
 To run RAT using your singularity container is quite easy. If you are not already in the singularity container shell, run
 
-`singularity shell sl7_rat.img`
+`singularity shell sl7_rat.sif`
 
 to get into it.
 
