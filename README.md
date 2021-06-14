@@ -1,4 +1,4 @@
-# rat_singularity
+# JSNS^2 singularity container for RAT
 This repository provides an easy way to manage and organize multiple version of the Singularity def file used to build jsns2-RAT.
 
 ## Installing singularity
