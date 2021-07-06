@@ -20,6 +20,8 @@ sudo make install
 
 If you encounter any complications, please refer to the official [Singularity documentation](https://singularity.lbl.gov/install-linux)
 
+**Warning: This method currently does not work with Singularity 3.X. Please use Singularity Versions 2.X**
+
 ## Building the Singularity container from the def file
 Since the JSNS2-RAT repository is private, it is necessary to manually copy it into the container on build. First clone the JSNS2-RAT repository to your current working directory via
 
